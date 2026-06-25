@@ -19,7 +19,6 @@ object CategoryUtils {
     const val SOURCE_FREELANCE = "Freelance"
     const val SOURCE_AUTRE = "Autre"
 
-    //Retourne toutes les catégories de dépenses (pour un Spinner)
     fun getDepenseCategories(): List<String> = listOf(
         CATEGORIE_TRANSPORT,
         CATEGORIE_NOURRITURE,
@@ -29,14 +28,12 @@ object CategoryUtils {
         CATEGORIE_AUTRE
     )
 
-    //Retourne toutes les sources de revenus (pour un Spinner)
     fun getRevenueSources(): List<String> = listOf(
         SOURCE_SALAIRE,
         SOURCE_FREELANCE,
         SOURCE_AUTRE
     )
 
-    //Associe une icône à une catégorie de dépense
     @DrawableRes
     fun getIconForCategory(categorie: String): Int {
         return when (categorie) {
@@ -49,7 +46,6 @@ object CategoryUtils {
         }
     }
 
-    //Associe une couleur à une catégorie de dépense
     @ColorRes
     fun getColorForCategory(categorie: String): Int {
         return when (categorie) {
@@ -62,8 +58,6 @@ object CategoryUtils {
         }
     }
 
-//      Retourne l'icône pour une source de revenu
-
     @DrawableRes
     fun getIconForRevenueSource(source: String): Int {
         return when (source) {
@@ -72,4 +66,4 @@ object CategoryUtils {
             else -> R.drawable.ic_autre
         }
     }
-}
+} // ← ATTENTION : cette accolade fermante est obligatoire !

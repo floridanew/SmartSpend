@@ -161,6 +161,14 @@
             android:textColor="#FFFFFF"
             android:padding="14dp"
             android:layout_marginTop="32dp" />
+        <Button
+            android:id="@+id/buttonSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paramètres"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 </ScrollView>

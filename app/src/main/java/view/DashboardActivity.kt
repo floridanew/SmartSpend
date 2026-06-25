@@ -70,6 +70,10 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+
+        findViewById<android.widget.Button>(R.id.buttonSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     private fun afficherTransactions(transactions: List<Transaction>) {
