@@ -26,4 +26,7 @@ interface TransactionDao {
 
     @Query("SELECT SUM(montant) FROM transactions WHERE type = 'DEPENSE'")
     suspend fun getTotalDepenses(): Double?
+
+    @Query("SELECT * FROM transactions ORDER BY date DESC LIMIT 5")
+    fun getLastTransactions(): LiveData<List<Transaction>>
 }

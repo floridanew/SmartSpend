@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartSpend">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.RegisterActivity" />
-        <activity android:name=".view.DashboardActivity" />
+        <activity android:name=".view.LoginActivity" android:exported="false" />
+        <activity android:name=".view.RegisterActivity" android:exported="false" />
+        <activity android:name=".view.DashboardActivity" android:exported="false" />
     </application>
 
 </manifest>
