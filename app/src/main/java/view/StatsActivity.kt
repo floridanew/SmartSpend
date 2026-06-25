@@ -83,6 +83,14 @@ class StatsActivity : AppCompatActivity() {
 
         // 5) Configurer la barre de navigation du bas
         configurerNavigation()
+
+        // ⚠️ TEMPORAIRE — bouton pour charger des données de test (à retirer plus tard)
+        findViewById<android.widget.Button>(R.id.buttonDonneesTest).setOnClickListener {
+            viewModel.insererDonneesDeTest()
+            android.widget.Toast.makeText(
+                this, "Données de test ajoutées !", android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     // =====================================================================

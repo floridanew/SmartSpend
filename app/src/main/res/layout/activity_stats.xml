@@ -33,6 +33,17 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <!-- ⚠️ BOUTON TEMPORAIRE — À RETIRER avant l'intégration finale.
+                 Sert uniquement à remplir la base pour tester les graphiques. -->
+            <Button
+                android:id="@+id/buttonDonneesTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Charger des données de test"
+                android:backgroundTint="@color/bleu_fonce"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp" />
+
             <!-- ====================  RÉSUMÉ TEXTUEL  ==================== -->
 
             <!-- Solde net (carte mise en avant) -->

@@ -4,12 +4,15 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieEntry
 import com.team.smartspend.database.AppDatabase
 import com.team.smartspend.model.Transaction
 import com.team.smartspend.repository.TransactionRepository
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 /**
@@ -44,6 +47,47 @@ class StatsViewModel(application: Application) : AndroidViewModel(application) {
         repository = TransactionRepository(dao)
         allTransactions = repository.allTransactions
     }
+
+    // =====================================================================
+    //  ⚠️ TEMPORAIRE — DONNÉES DE TEST (À RETIRER avant l'intégration finale)
+    //  Permet de remplir la base avec quelques transactions pour voir
+    //  les graphiques fonctionner, tant que l'écran "Ajouter une transaction"
+    //  n'est pas disponible.
+    // =====================================================================
+    fun insererDonneesDeTest() = viewModelScope.launch {
+        val maintenant = System.currentTimeMillis()
+
+        // Petit utilitaire : renvoie un timestamp "il y a N mois"
+        fun ilYaNMois(n: Int): Long {
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = maintenant
+            cal.add(Calendar.MONTH, -n)
+            return cal.timeInMillis
+        }
+
+        val exemples = listOf(
+            // --- Mois en cours ---
+            Transaction(montant = 150000.0, type = "REVENU", categorie = "Salaire", date = ilYaNMois(0)),
+            Transaction(montant = 30000.0, type = "DEPENSE", categorie = "Nourriture", date = ilYaNMois(0)),
+            Transaction(montant = 15000.0, type = "DEPENSE", categorie = "Transport", date = ilYaNMois(0)),
+            Transaction(montant = 50000.0, type = "DEPENSE", categorie = "Loyer", date = ilYaNMois(0)),
+            Transaction(montant = 10000.0, type = "DEPENSE", categorie = "Loisirs", date = ilYaNMois(0)),
+            // --- Mois dernier ---
+            Transaction(montant = 150000.0, type = "REVENU", categorie = "Salaire", date = ilYaNMois(1)),
+            Transaction(montant = 25000.0, type = "DEPENSE", categorie = "Nourriture", date = ilYaNMois(1)),
+            Transaction(montant = 12000.0, type = "DEPENSE", categorie = "Transport", date = ilYaNMois(1)),
+            Transaction(montant = 50000.0, type = "DEPENSE", categorie = "Loyer", date = ilYaNMois(1)),
+            // --- Il y a 2 mois ---
+            Transaction(montant = 140000.0, type = "REVENU", categorie = "Salaire", date = ilYaNMois(2)),
+            Transaction(montant = 28000.0, type = "DEPENSE", categorie = "Nourriture", date = ilYaNMois(2)),
+            Transaction(montant = 20000.0, type = "DEPENSE", categorie = "Santé", date = ilYaNMois(2))
+        )
+
+        exemples.forEach { repository.insert(it) }
+    }
+    // =====================================================================
+    //  FIN DE LA PARTIE TEMPORAIRE
+    // =====================================================================
 
     // ---------------------------------------------------------------------
     //  1) DONNÉES POUR LES GRAPHIQUES (MPAndroidChart)
