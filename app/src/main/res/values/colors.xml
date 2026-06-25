@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="categorie_transport">#2196F3</color>   <!-- Bleu -->
+    <color name="categorie_nourriture">#4CAF50</color>  <!-- Vert -->
+    <color name="categorie_loyer">#FF9800</color>       <!-- Orange -->
+    <color name="categorie_loisirs">#9C27B0</color>     <!-- Violet -->
+    <color name="categorie_sante">#F44336</color>       <!-- Rouge -->
+    <color name="categorie_autre">#9E9E9E</color>       <!-- Gris -->
 </resources>
