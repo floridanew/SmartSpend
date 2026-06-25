@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.team.smartspend.R
 import com.team.smartspend.model.Transaction
 import com.team.smartspend.utils.SessionManager
@@ -69,6 +70,41 @@ class DashboardActivity : AppCompatActivity() {
             sessionManager.logout()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        }
+
+        configurerNavigation()
+    }
+
+    /**
+     * Barre de navigation du bas (Membre 5).
+     * Permet de passer rapidement d'un écran principal à l'autre.
+     */
+    private fun configurerNavigation() {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNav.selectedItemId = R.id.nav_dashboard // on est sur le Dashboard
+
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_dashboard -> true // déjà ici
+                R.id.nav_stats -> {
+                    startActivity(Intent(this, StatsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_history -> {
+                    android.widget.Toast.makeText(
+                        this, "Historique — à venir", android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    false
+                }
+                R.id.nav_settings -> {
+                    android.widget.Toast.makeText(
+                        this, "Paramètres — à venir", android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    false
+                }
+                else -> false
+            }
         }
     }
 

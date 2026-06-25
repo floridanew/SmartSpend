@@ -2,4 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Charte SmartSpend -->
+    <color name="bleu_fonce">#1E3A5F</color>
+    <color name="vert_revenu">#2E7D32</color>
+    <color name="rouge_depense">#C62828</color>
+    <color name="gris_fond">#F5F5F5</color>
+    <color name="gris_texte">#666666</color>
+
+    <!-- Palette pour les parts du camembert (PieChart) -->
+    <color name="chart_1">#1E88E5</color>
+    <color name="chart_2">#43A047</color>
+    <color name="chart_3">#FB8C00</color>
+    <color name="chart_4">#8E24AA</color>
+    <color name="chart_5">#E53935</color>
+    <color name="chart_6">#00ACC1</color>
+    <color name="chart_7">#FDD835</color>
+    <color name="chart_8">#6D4C41</color>
 </resources>
