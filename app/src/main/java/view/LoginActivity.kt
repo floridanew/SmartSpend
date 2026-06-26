@@ -2,6 +2,7 @@ package com.team.smartspend.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.team.smartspend.R
@@ -30,8 +31,17 @@ class LoginActivity : AppCompatActivity() {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
+            // Validation inline (message d'erreur directement sous le champ)
+            if (email.isEmpty()) {
+                emailField.error = "Veuillez saisir votre email"
+                return@setOnClickListener
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailField.error = "Format d'email invalide"
+                return@setOnClickListener
+            }
+            if (password.isEmpty()) {
+                passwordField.error = "Veuillez saisir votre mot de passe"
                 return@setOnClickListener
             }
 

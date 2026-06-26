@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.team.smartspend.database.AppDatabase
 import com.team.smartspend.model.Transaction
 import com.team.smartspend.repository.TransactionRepository
+import com.team.smartspend.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -85,8 +86,13 @@ class StatsViewModel(application: Application) : AndroidViewModel(application) {
      * Le résumé chiffré, recalculé automatiquement à chaque changement.
      */
     val summary: LiveData<StatsSummary> = allTransactions.map { transactions ->
-        val revenus = transactions.filter { it.type == "REVENU" }
-        val depenses = transactions.filter { it.type == "DEPENSE" }
+        // On ne garde que les transactions du MOIS COURANT (conforme au CDC).
+        val debutMois = DateUtils.debutDuMois()
+        val finMois = DateUtils.finDuMois()
+        val duMois = transactions.filter { it.date in debutMois..finMois }
+
+        val revenus = duMois.filter { it.type == "REVENU" }
+        val depenses = duMois.filter { it.type == "DEPENSE" }
 
         val totalRevenus = revenus.sumOf { it.montant }
         val totalDepenses = depenses.sumOf { it.montant }

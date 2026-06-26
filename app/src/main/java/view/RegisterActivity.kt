@@ -2,6 +2,7 @@ package com.team.smartspend.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.team.smartspend.R
@@ -29,13 +30,21 @@ class RegisterActivity : AppCompatActivity() {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
 
-            if (nom.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
+            // Validation inline (message d'erreur directement sous chaque champ)
+            if (nom.isEmpty()) {
+                nomField.error = "Veuillez saisir votre nom"
                 return@setOnClickListener
             }
-
+            if (email.isEmpty()) {
+                emailField.error = "Veuillez saisir votre email"
+                return@setOnClickListener
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailField.error = "Format d'email invalide"
+                return@setOnClickListener
+            }
             if (password.length < 6) {
-                Toast.makeText(this, "Le mot de passe doit contenir au moins 6 caractères", Toast.LENGTH_SHORT).show()
+                passwordField.error = "Le mot de passe doit contenir au moins 6 caractères"
                 return@setOnClickListener
             }
 
