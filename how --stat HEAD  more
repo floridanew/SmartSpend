@@ -1,0 +1,62 @@
+[33mcommit a187f8f3b7f98b90bbfb2d646f609c5f6dde6354[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/membre4-historique[m[33m, [m[1;31morigin/feature/membre4-historique[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Tagne Franck <tchouabehfranck@gmail.com>
+Date:   Thu Jun 25 16:07:02 2026 +0100
+
+    feat: add history screen, export CSV/PDF and tests
+
+ .gitignore                                         |  15 [32m++[m
+ .idea/AndroidProjectSystem.xml                     |   6 [32m+[m
+ .idea/gradle.xml                                   |  11 [32m+[m
+ .idea/misc.xml                                     |  10 [32m+[m
+ .idea/runConfigurations.xml                        |  17 [32m++[m
+ app/.gitignore                                     |   1 [32m+[m
+ app/build.gradle.kts                               |  59 [32m+++++[m
+ app/proguard-rules.pro                             |  21 [32m++[m
+ .../example/smartspend/ExampleInstrumentedTest.kt  |  24 [32m++[m
+ app/src/main/AndroidManifest.xml                   |  29 [32m+++[m
+ .../java/com/example/smartspend/MainActivity.kt    |  47 [32m++++[m
+ .../example/smartspend/View/HistoryActivity.java   |  96 [32m++++++++[m
+ .../smartspend/adapter/TransictionAdapter.java     |  97 [32m++++++++[m
+ .../example/smartspend/database/AppDatabase.java   |  30 [32m+++[m
+ .../smartspend/database/TransactionDao.java        |  41 [32m++++[m
+ .../com/example/smartspend/model/Transaction.java  |  29 [32m+++[m
+ .../java/com/example/smartspend/ui/theme/Color.kt  |  11 [32m+[m
+ .../java/com/example/smartspend/ui/theme/Theme.kt  |  58 [32m+++++[m
+ .../java/com/example/smartspend/ui/theme/Type.kt   |  34 [32m+++[m
+ .../smartspend/utils/BalanceCalculator.java        |  72 [32m++++++[m
+ .../example/smartspend/utils/CategoryUtils.java    |  20 [32m++[m
+ .../com/example/smartspend/utils/ExportUtils.java  | 248 [32m++++++++++++++++++++[m
+ .../smartspend/viewmodel/HistoryViewModel.java     |  59 [32m+++++[m
+ .../viewmodel/HistoryViewModelFactory.java         |  23 [32m++[m
+ .../main/res/drawable/ic_launcher_background.xml   | 170 [32m++++++++++++++[m
+ .../main/res/drawable/ic_launcher_foreground.xml   |  30 [32m+++[m
+ app/src/main/res/layout/activity_history.xml       |   0
+ app/src/main/res/layout/item_transaction.xml       |   0
+ app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml |   6 [32m+[m
+ .../res/mipmap-anydpi-v26/ic_launcher_round.xml    |   6 [32m+[m
+ app/src/main/res/mipmap-hdpi/ic_launcher.webp      | Bin [31m0[m -> [32m1404[m bytes
+ .../main/res/mipmap-hdpi/ic_launcher_round.webp    | Bin [31m0[m -> [32m2898[m bytes
+ app/src/main/res/mipmap-mdpi/ic_launcher.webp      | Bin [31m0[m -> [32m982[m bytes
+ .../main/res/mipmap-mdpi/ic_launcher_round.webp    | Bin [31m0[m -> [32m1772[m bytes
+ app/src/main/res/mipmap-xhdpi/ic_launcher.webp     | Bin [31m0[m -> [32m1900[m bytes
+ .../main/res/mipmap-xhdpi/ic_launcher_round.webp   | Bin [31m0[m -> [32m3918[m bytes
+ app/src/main/res/mipmap-xxhdpi/ic_launcher.webp    | Bin [31m0[m -> [32m2884[m bytes
+ .../main/res/mipmap-xxhdpi/ic_launcher_round.webp  | Bin [31m0[m -> [32m5914[m bytes
+ app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp   | Bin [31m0[m -> [32m3844[m bytes
+ .../main/res/mipmap-xxxhdpi/ic_launcher_round.webp | Bin [31m0[m -> [32m7778[m bytes
+ app/src/main/res/values/colors.xml                 |  10 [32m+[m
+ app/src/main/res/values/strings.xml                |   3 [32m+[m
+ app/src/main/res/values/themes.xml                 |   5 [32m+[m
+ app/src/main/res/xml/backup_rules.xml              |  13 [32m++[m
+ app/src/main/res/xml/data_extraction_rules.xml     |  19 [32m++[m
+ .../java/com/example/smartspend/ExampleUnitTest.kt |  17 [32m++[m
+ build.gradle.kts                                   |   5 [32m+[m
+ gradle.properties                                  |  15 [32m++[m
+ gradle/gradle-daemon-jvm.properties                |  12 [32m+[m
+ gradle/libs.versions.toml                          |  31 [32m+++[m
+ gradle/wrapper/gradle-wrapper.jar                  | Bin [31m0[m -> [32m45457[m bytes
+ gradle/wrapper/gradle-wrapper.properties           |   9 [32m+[m
+ gradlew                                            | 251 [32m+++++++++++++++++++++[m
+ gradlew.bat                                        |  94 [32m++++++++[m
+ settings.gradle.kts                                |  26 [32m+++[m
+ 55 files changed, 1780 insertions(+)
