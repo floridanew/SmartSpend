@@ -38,4 +38,9 @@ interface TransactionDao {
     // :debut et :fin sont les bornes (timestamps) du mois.
     @Query("SELECT SUM(montant) FROM transactions WHERE type = 'DEPENSE' AND date BETWEEN :debut AND :fin")
     suspend fun getTotalDepensesMois(debut: Long, fin: Long): Double?
+
+    // Recherche par description OU catégorie (Membre 4 - historique)
+    @Query("SELECT * FROM transactions WHERE description LIKE '%' || :query || '%' " +
+            "OR categorie LIKE '%' || :query || '%' ORDER BY date DESC")
+    fun searchTransactions(query: String): LiveData<List<Transaction>>
 }

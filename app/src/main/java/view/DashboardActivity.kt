@@ -109,10 +109,9 @@ class DashboardActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_history -> {
-                    android.widget.Toast.makeText(
-                        this, "Historique — à venir", android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    false
+                    startActivity(Intent(this, HistoryActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
                 }
                 R.id.nav_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))

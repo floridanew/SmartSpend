@@ -216,18 +216,14 @@ class StatsActivity : AppCompatActivity() {
                 }
                 R.id.nav_stats -> true // déjà sur cet écran
                 R.id.nav_history -> {
-                    // Écran de l'historique : développé par un autre membre de l'équipe
-                    android.widget.Toast.makeText(
-                        this, "Historique — à venir", android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    false
+                    startActivity(Intent(this, HistoryActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
                 }
                 R.id.nav_settings -> {
-                    // Écran des paramètres : développé par un autre membre de l'équipe
-                    android.widget.Toast.makeText(
-                        this, "Paramètres — à venir", android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    false
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
                 }
                 else -> false
             }
