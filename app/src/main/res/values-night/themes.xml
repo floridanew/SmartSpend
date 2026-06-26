@@ -4,4 +4,16 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+
+    <!-- Thème sombre (chargé automatiquement la nuit ou quand le mode sombre est activé) -->
+    <style name="Theme.SmartSpend" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0D2137</item>
+        <item name="colorPrimaryVariant">#1E3A5F</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#66BB6A</item>
+        <item name="colorSecondaryVariant">#4CAF50</item>
+        <item name="colorOnSecondary">#000000</item>
+        <item name="android:statusBarColor">#0D2137</item>
+        <item name="android:windowBackground">#121212</item>
+    </style>
 </resources>
