@@ -2,8 +2,17 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.SmartSpend" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.SmartSpend" parent="Base.Theme.SmartSpend" />
+    <!-- Thème clair (par défaut) -->
+    <style name="Theme.SmartSpend" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#1E3A5F</item>
+        <item name="colorPrimaryVariant">#0D2137</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorSecondaryVariant">#388E3C</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:statusBarColor">#1E3A5F</item>
+        <item name="android:windowBackground">#F5F5F5</item>
+    </style>
 </resources>

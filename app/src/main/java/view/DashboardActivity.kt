@@ -98,10 +98,9 @@ class DashboardActivity : AppCompatActivity() {
                     false
                 }
                 R.id.nav_settings -> {
-                    android.widget.Toast.makeText(
-                        this, "Paramètres — à venir", android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    false
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
                 }
                 else -> false
             }

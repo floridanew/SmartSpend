@@ -25,6 +25,8 @@
         <activity android:name=".view.RegisterActivity" android:exported="false" />
         <activity android:name=".view.DashboardActivity" android:exported="false" />
         <activity android:name=".view.StatsActivity" android:exported="false" />
+        <activity android:name=".view.SettingsActivity" android:exported="false" />
+        <activity android:name=".view.AddExpenseActivity" android:exported="false" />
     </application>
 
 </manifest>
