@@ -13,6 +13,7 @@ import com.team.smartspend.R
 import com.team.smartspend.model.Transaction
 import com.team.smartspend.utils.SessionManager
 import com.team.smartspend.viewmodel.DashboardViewModel
+import com.team.smartspend.viewmodel.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -20,6 +21,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private lateinit var sessionManager: SessionManager
     private lateinit var viewModel: DashboardViewModel
+    private lateinit var transactionViewModel: TransactionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,7 @@ class DashboardActivity : AppCompatActivity() {
         welcomeText.text = "Bienvenue, ${sessionManager.getUserNom()} !"
 
         viewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
+        transactionViewModel = ViewModelProvider(this)[TransactionViewModel::class.java]
 
         // Observer les chiffres (solde, revenus, dépenses, budget)
         viewModel.uiState.observe(this) { state ->
@@ -72,7 +75,21 @@ class DashboardActivity : AppCompatActivity() {
             finish()
         }
 
+        // Boutons d'ajout (Membre 3)
+        findViewById<android.widget.Button>(R.id.buttonAddDepense).setOnClickListener {
+            startActivity(Intent(this, AddExpenseActivity::class.java))
+        }
+        findViewById<android.widget.Button>(R.id.buttonAddRevenu).setOnClickListener {
+            startActivity(Intent(this, AddIncomeActivity::class.java))
+        }
+
         configurerNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Recalcule le solde au retour sur l'écran (après ajout/édition/suppression)
+        viewModel.loadDashboard()
     }
 
     /**
@@ -152,7 +169,44 @@ class DashboardActivity : AppCompatActivity() {
 
             itemLayout.addView(infoText)
             itemLayout.addView(montantText)
+
+            // Clic = modifier, appui long = supprimer (Membre 3)
+            itemLayout.setOnClickListener { ouvrirEdition(transaction) }
+            itemLayout.setOnLongClickListener {
+                confirmerSuppression(transaction)
+                true
+            }
+
             container.addView(itemLayout)
         }
+    }
+
+    /** Ouvre le bon écran d'édition selon le type de transaction. */
+    private fun ouvrirEdition(t: Transaction) {
+        val intent = if (t.type == "REVENU") {
+            Intent(this, AddIncomeActivity::class.java)
+                .putExtra(AddIncomeActivity.EXTRA_ID, t.id)
+        } else {
+            Intent(this, AddExpenseActivity::class.java)
+                .putExtra(AddExpenseActivity.EXTRA_ID, t.id)
+        }
+        startActivity(intent)
+    }
+
+    /** Demande confirmation puis supprime la transaction. */
+    private fun confirmerSuppression(t: Transaction) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Supprimer")
+            .setMessage("Supprimer cette transaction ?")
+            .setPositiveButton("Oui") { _, _ ->
+                transactionViewModel.deleteTransaction(t) {
+                    android.widget.Toast.makeText(
+                        this, "Transaction supprimée", android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    viewModel.loadDashboard()
+                }
+            }
+            .setNegativeButton("Non", null)
+            .show()
     }
 }

@@ -32,6 +32,42 @@
         android:layout_marginTop="16dp"
         android:background="@android:drawable/editbox_background" />
 
+    <!-- Budget mensuel (Membre 3) -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Budget mensuel maximum (FCFA)"
+        android:textColor="#1E3A5F"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp" />
+
+    <EditText
+        android:id="@+id/inputBudget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ex : 100000"
+        android:inputType="numberDecimal"
+        android:padding="16dp"
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/buttonSaveBudget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Définir le budget"
+        android:backgroundTint="#1E3A5F"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/textBudgetActuel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aucun budget défini ce mois"
+        android:textColor="#666666"
+        android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"

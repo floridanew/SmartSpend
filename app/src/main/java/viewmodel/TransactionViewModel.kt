@@ -39,4 +39,29 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     fun getTotalDepenses(callback: (Double) -> Unit) = viewModelScope.launch {
         callback(repository.getTotalDepenses())
     }
+
+    // ---- Versions avec callback : exécutent une action une fois terminé ----
+
+    fun insertTransaction(transaction: Transaction, onDone: () -> Unit) = viewModelScope.launch {
+        repository.insert(transaction)
+        onDone()
+    }
+
+    fun updateTransaction(transaction: Transaction, onDone: () -> Unit) = viewModelScope.launch {
+        repository.update(transaction)
+        onDone()
+    }
+
+    fun deleteTransaction(transaction: Transaction, onDone: () -> Unit) = viewModelScope.launch {
+        repository.delete(transaction)
+        onDone()
+    }
+
+    fun getById(id: Int, callback: (Transaction?) -> Unit) = viewModelScope.launch {
+        callback(repository.getById(id))
+    }
+
+    fun getTotalDepensesMois(debut: Long, fin: Long, callback: (Double) -> Unit) = viewModelScope.launch {
+        callback(repository.getTotalDepensesMois(debut, fin))
+    }
 }

@@ -1,8 +1,6 @@
 package com.team.smartspend.view
 
-import android.Manifest
 import android.app.DatePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -10,36 +8,30 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.team.smartspend.R
 import com.team.smartspend.model.Transaction
 import com.team.smartspend.utils.CategoryUtils
-import com.team.smartspend.utils.DateUtils
-import com.team.smartspend.utils.NotificationHelper
-import com.team.smartspend.viewmodel.BudgetViewModel
 import com.team.smartspend.viewmodel.TransactionViewModel
 import java.util.Calendar
 
 /**
- * AddExpenseActivity — ajouter OU modifier une DÉPENSE (Membre 3).
+ * AddIncomeActivity — ajouter OU modifier un REVENU (Membre 3).
  *
- * - Sans extra : mode AJOUT.
- * - Avec l'extra EXTRA_ID : mode MODIFICATION (champs pré-remplis, bouton Supprimer visible).
- *
- * Après chaque ajout, on vérifie le budget du mois : s'il est dépassé,
- * une notification d'alerte est envoyée.
+ * Logique identique à l'ajout de dépense, mais :
+ *   - type = "REVENU" ;
+ *   - choix d'une SOURCE (Salaire, Freelance, Autre) au lieu d'une catégorie ;
+ *   - pas de vérification de budget (le budget concerne les dépenses).
  */
-class AddExpenseActivity : AppCompatActivity() {
+class AddIncomeActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ID = "transaction_id"
     }
 
     private lateinit var transactionViewModel: TransactionViewModel
-    private lateinit var budgetViewModel: BudgetViewModel
 
     private lateinit var montantInput: EditText
     private lateinit var spinner: Spinner
@@ -50,29 +42,23 @@ class AddExpenseActivity : AppCompatActivity() {
     private var modeEdition = false
     private var transactionAEditer: Transaction? = null
 
-    // Demande de permission de notification (Android 13+)
-    private val permissionNotif = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { /* accordée ou non, on continue sans bloquer */ }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_expense)
+        setContentView(R.layout.activity_add_income)
 
         transactionViewModel = ViewModelProvider(this)[TransactionViewModel::class.java]
-        budgetViewModel = ViewModelProvider(this)[BudgetViewModel::class.java]
 
         montantInput = findViewById(R.id.inputMontant)
-        spinner = findViewById(R.id.spinnerCategorie)
+        spinner = findViewById(R.id.spinnerSource)
         dateInput = findViewById(R.id.inputDate)
         descriptionInput = findViewById(R.id.inputDescription)
         val saveButton = findViewById<Button>(R.id.buttonSauvegarder)
         val deleteButton = findViewById<Button>(R.id.buttonSupprimer)
         val titre = findViewById<TextView>(R.id.textTitre)
 
-        // Remplir le spinner avec les catégories de dépense
-        val categories = CategoryUtils.getDepenseCategories()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        // Remplir le spinner avec les sources de revenu
+        val sources = CategoryUtils.getRevenueSources()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, sources)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
@@ -85,27 +71,20 @@ class AddExpenseActivity : AppCompatActivity() {
             }
         }
 
-        // Demander la permission de notification si besoin (Android 13+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionNotif.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-
         // Mode édition ?
         val id = intent.getIntExtra(EXTRA_ID, -1)
         if (id != -1) {
             modeEdition = true
-            titre.text = "Modifier la dépense"
+            titre.text = "Modifier le revenu"
             deleteButton.visibility = Button.VISIBLE
-            chargerTransaction(id, categories)
+            chargerTransaction(id, sources)
         }
 
         saveButton.setOnClickListener { enregistrer() }
-
         deleteButton.setOnClickListener { confirmerSuppression() }
     }
 
-    /** Charge les données existantes et pré-remplit le formulaire (mode édition). */
-    private fun chargerTransaction(id: Int, categories: List<String>) {
+    private fun chargerTransaction(id: Int, sources: List<String>) {
         transactionViewModel.getById(id) { t ->
             if (t != null) {
                 transactionAEditer = t
@@ -113,7 +92,7 @@ class AddExpenseActivity : AppCompatActivity() {
                 descriptionInput.setText(t.description)
                 selectedDate = t.date
                 afficherDate(t.date)
-                val index = categories.indexOf(t.categorie)
+                val index = sources.indexOf(t.categorie)
                 if (index >= 0) spinner.setSelection(index)
             }
         }
@@ -123,10 +102,9 @@ class AddExpenseActivity : AppCompatActivity() {
         dateInput.setText(android.text.format.DateFormat.format("dd/MM/yyyy", timestamp))
     }
 
-    /** Valide et enregistre (ajout ou modification). */
     private fun enregistrer() {
         val montant = montantInput.text.toString().trim().toDoubleOrNull()
-        val categorie = spinner.selectedItem.toString()
+        val source = spinner.selectedItem.toString()
         val description = descriptionInput.text.toString().trim()
 
         if (montant == null || montant <= 0) {
@@ -135,9 +113,9 @@ class AddExpenseActivity : AppCompatActivity() {
         }
 
         val transaction = Transaction(
-            id = transactionAEditer?.id ?: 0,   // 0 = nouvel id auto ; sinon on garde l'id existant
-            type = "DEPENSE",
-            categorie = categorie,
+            id = transactionAEditer?.id ?: 0,
+            type = "REVENU",
+            categorie = source,      // pour un revenu, la "catégorie" stocke la source
             montant = montant,
             description = description,
             date = selectedDate
@@ -145,53 +123,30 @@ class AddExpenseActivity : AppCompatActivity() {
 
         if (modeEdition) {
             transactionViewModel.updateTransaction(transaction) {
-                Toast.makeText(this, "✅ Dépense modifiée", Toast.LENGTH_SHORT).show()
-                verifierBudget()
+                Toast.makeText(this, "✅ Revenu modifié", Toast.LENGTH_SHORT).show()
                 finish()
             }
         } else {
             transactionViewModel.insertTransaction(transaction) {
-                Toast.makeText(this, "✅ Dépense enregistrée", Toast.LENGTH_SHORT).show()
-                verifierBudget()
+                Toast.makeText(this, "✅ Revenu enregistré", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
     }
 
-    /** Demande confirmation puis supprime la transaction. */
     private fun confirmerSuppression() {
         val t = transactionAEditer ?: return
         AlertDialog.Builder(this)
             .setTitle("Supprimer")
-            .setMessage("Voulez-vous vraiment supprimer cette dépense ?")
+            .setMessage("Voulez-vous vraiment supprimer ce revenu ?")
             .setPositiveButton("Oui") { _, _ ->
                 transactionViewModel.deleteTransaction(t) {
-                    Toast.makeText(this, "Dépense supprimée", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Revenu supprimé", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
             .setNegativeButton("Non", null)
             .show()
-    }
-
-    /**
-     * Vérifie si les dépenses du mois dépassent le budget défini.
-     * Si oui, envoie une notification d'alerte.
-     */
-    private fun verifierBudget() {
-        val mois = DateUtils.moisActuel()
-        budgetViewModel.getBudget(mois) { budget ->
-            val budgetMax = budget?.montantMax ?: 0.0
-            if (budgetMax > 0) {
-                transactionViewModel.getTotalDepensesMois(
-                    DateUtils.debutDuMois(), DateUtils.finDuMois()
-                ) { totalDepenses ->
-                    if (totalDepenses > budgetMax) {
-                        NotificationHelper.alerteBudgetDepasse(this, totalDepenses, budgetMax)
-                    }
-                }
-            }
-        }
     }
 
     private fun showDatePicker(onDateSelected: (Long) -> Unit) {

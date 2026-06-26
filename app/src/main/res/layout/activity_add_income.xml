@@ -15,10 +15,10 @@
             android:id="@+id/textTitre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajouter une dépense"
+            android:text="Ajouter un revenu"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#1E3A5F"
+            android:textColor="#2E7D32"
             android:layout_marginBottom="24dp" />
 
         <EditText
@@ -32,7 +32,7 @@
             android:layout_marginBottom="16dp" />
 
         <Spinner
-            android:id="@+id/spinnerCategorie"
+            android:id="@+id/spinnerSource"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
@@ -62,10 +62,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Enregistrer"
-            android:backgroundTint="#1E3A5F"
+            android:backgroundTint="#2E7D32"
             android:textColor="#FFFFFF" />
 
-        <!-- Visible uniquement en mode édition -->
         <Button
             android:id="@+id/buttonSupprimer"
             android:layout_width="match_parent"

@@ -27,4 +27,12 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
     suspend fun getTotalDepenses(): Double {
         return transactionDao.getTotalDepenses() ?: 0.0
     }
+
+    suspend fun getById(id: Int): Transaction? {
+        return transactionDao.getById(id)
+    }
+
+    suspend fun getTotalDepensesMois(debut: Long, fin: Long): Double {
+        return transactionDao.getTotalDepensesMois(debut, fin) ?: 0.0
+    }
 }

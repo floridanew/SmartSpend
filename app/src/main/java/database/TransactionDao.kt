@@ -29,4 +29,13 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions ORDER BY date DESC LIMIT 5")
     fun getLastTransactions(): LiveData<List<Transaction>>
+
+    // Récupérer une transaction précise (pour l'édition)
+    @Query("SELECT * FROM transactions WHERE id = :id LIMIT 1")
+    suspend fun getById(id: Int): Transaction?
+
+    // Total des dépenses d'un mois donné (pour la vérification du budget / notifications)
+    // :debut et :fin sont les bornes (timestamps) du mois.
+    @Query("SELECT SUM(montant) FROM transactions WHERE type = 'DEPENSE' AND date BETWEEN :debut AND :fin")
+    suspend fun getTotalDepensesMois(debut: Long, fin: Long): Double?
 }
